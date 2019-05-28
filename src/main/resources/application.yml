@@ -1,0 +1,12 @@
+kafka:
+  bootstrapAddress: localhost:9092
+
+hosts:
+  glass:
+    address: 11116
+  gyspsum:
+    address: 11136
+  iceCream:
+    address: 11126
+  root:
+    address: 10003
