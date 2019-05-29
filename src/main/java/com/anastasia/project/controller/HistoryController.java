@@ -6,13 +6,13 @@ import com.anastasia.project.dto.CarrierEventStateDto;
 import com.anastasia.project.dto.ChangeCarrierStateDto;
 import com.anastasia.project.dto.DeleteContainerStateDto;
 import com.anastasia.project.dto.PutContainerStateDto;
+import com.anastasia.project.service.ConsumeInfo;
 import com.anastasia.project.service.ProduceInfo;
 import com.anastasia.project.webDto.CarrierEventStateWebDto;
 import com.anastasia.project.webDto.ChangeCarrierStateWebDto;
 import com.anastasia.project.webDto.DeleteContainerStateWebDto;
 import com.anastasia.project.webDto.HistoryDto;
 import com.anastasia.project.webDto.PutContainerStateWebDto;
-import net.andrc.states.ChangeCarrierState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +24,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/message")
-public class MessageController {
+public class HistoryController {
 
     private final ProduceInfo produceInfo;
+    private final ConsumeInfo consumeInfo;
 
 
     @Autowired
-    public MessageController(ProduceInfo produceInfo) {
+    public HistoryController(ProduceInfo produceInfo, ConsumeInfo consumeInfo) {
         this.produceInfo = produceInfo;
+        this.consumeInfo = consumeInfo;
     }
 
     @GetMapping
@@ -41,7 +43,7 @@ public class MessageController {
 
     @GetMapping("/container")
     public List<? super HistoryDto> getHistoryForSpecificItem(@RequestParam String name) {
-        List<BaseStateDto> stateDtos = produceInfo.produceSpecificHistory(name);
+        List<BaseStateDto> stateDtos = consumeInfo.produceSpecificHistory(name);
 
         List<? super HistoryDto> history = new ArrayList<>();
         for (BaseStateDto stateDto : stateDtos) {
