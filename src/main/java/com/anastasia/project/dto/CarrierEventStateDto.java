@@ -1,20 +1,15 @@
 package com.anastasia.project.dto;
 
 import lombok.Data;
-import net.andrc.items.Events;
 import net.andrc.states.CarrierEventState;
 
-import java.util.Date;
-
 @Data
-public class CarrierEventStateDto {
+public class CarrierEventStateDto extends BaseStateDto {
 
-    private Events eventContract;
-    private Date date;
+    private String event;
 
-
-    public CarrierEventStateDto (CarrierEventState carrierState) {
-        this.eventContract = carrierState.getEventContract();
+    public CarrierEventStateDto(CarrierEventState carrierState) {
+        this.event = carrierState.getEventContract().name();
         this.date = carrierState.getDate();
 
     }

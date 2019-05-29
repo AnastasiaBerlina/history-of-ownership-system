@@ -9,14 +9,13 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class PutContainerStateDto {
+public class PutContainerStateDto extends BaseStateDto {
     private String containerName;
     private long maxCapacity;
     private List<Item> items;
     private List<String> containers;
     private String owner;
     private GeoData geoData;
-    private Date date;
 
     public PutContainerStateDto(PutContainerState putContainerState) {
         containerName = putContainerState.getContainerName();

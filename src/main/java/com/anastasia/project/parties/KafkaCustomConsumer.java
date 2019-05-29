@@ -1,6 +1,6 @@
 package com.anastasia.project.parties;
 
-import com.anastasia.project.model.Message;
+
 import com.anastasia.project.serializr.KafkaJSONDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -20,7 +20,7 @@ public class KafkaCustomConsumer {
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
-    private final KafkaConsumer<String, Message> consumer;
+    //private final KafkaConsumer<String, Message> consumer;
     private static final String KAFKA_SERVER_URL = "localhost";
     private static final int KAFKA_SERVER_PORT = 9092;
     private static final String CLIENT_ID = "SampleConsumer";
@@ -35,20 +35,20 @@ public class KafkaCustomConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaJSONDeserializer.class);
 
-        consumer = new KafkaConsumer<>(props);
+        //consumer = new KafkaConsumer<>(props);
     }
 
-    public void subscribe(List<String> topics){
-        consumer.subscribe(topics);
-    }
-
-    public void doWork(){
-        ConsumerRecords<String, Message> records = consumer.poll(Duration.ofMillis(100));
-        System.out.println(records.count());
-        for (ConsumerRecord<String, Message> record : records) {
-            System.out.println("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset());
-        }
-    }
+//    public void subscribe(List<String> topics){
+//        consumer.subscribe(topics);
+//    }
+//
+//    public void doWork(){
+//        ConsumerRecords<String, Message> records = consumer.poll(Duration.ofMillis(100));
+//        System.out.println(records.count());
+//        for (ConsumerRecord<String, Message> record : records) {
+//            System.out.println("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset());
+//        }
+//    }
 
 
 }

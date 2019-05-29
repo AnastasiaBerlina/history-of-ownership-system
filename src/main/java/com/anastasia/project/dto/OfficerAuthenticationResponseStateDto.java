@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class OfficerAuthenticationResponseStateDto {
+public class OfficerAuthenticationResponseStateDto extends BaseStateDto {
     private OfficerCertificate officerCertificate;
     private String data;
     private String signature;
@@ -19,7 +19,6 @@ public class OfficerAuthenticationResponseStateDto {
     private ResponseStatus responseStatus;
     private String requestId;
     private GeoData geoData;
-    private Date date;
 
     public OfficerAuthenticationResponseStateDto (OfficerAuthenticationResponseState responseState){
         this.data = responseState.getData();

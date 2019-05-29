@@ -20,6 +20,8 @@ dependencies {
     compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.2.0'
     compile group: 'net.corda', name: 'corda-rpc', version: '4.0'
     compile files('libs/contracts.jar')
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0'
+
 
 
 }

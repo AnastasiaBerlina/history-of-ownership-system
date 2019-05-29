@@ -7,12 +7,11 @@ import net.andrc.states.DeleteContainerState;
 import java.util.Date;
 
 @Data
-public class DeleteContainerStateDto {
+public class DeleteContainerStateDto extends BaseStateDto {
 
     private String containerName;
     private String ownerName;
     private GeoData geoData;
-    private Date date;
 
     public DeleteContainerStateDto (DeleteContainerState deleteContainerState){
         this.containerName = deleteContainerState.getContainerName();

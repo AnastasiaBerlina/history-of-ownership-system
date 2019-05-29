@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class OfficerAuthenticationRequestStateDto {
+public class OfficerAuthenticationRequestStateDto extends BaseStateDto {
 
     private OfficerCertificate officerCertificate;
     private String signature;
     private List<String> ownersName;
     private GeoData geoData;
     private String requestId;
-    private Date date;
+
 
     public OfficerAuthenticationRequestStateDto (OfficerAuthenticationRequestState responseState){
         this.date = responseState.getDate();
