@@ -18,12 +18,12 @@ public class PutContainerStateDto extends BaseStateDto {
     private GeoData geoData;
 
     public PutContainerStateDto(PutContainerState putContainerState) {
+        super(putContainerState.getDate());
         containerName = putContainerState.getContainerName();
         maxCapacity = putContainerState.getMaxCapacity();
         items = putContainerState.getItems();
         containers = putContainerState.getContainers();
         owner = putContainerState.getOwner().getName().getOrganisation();
         geoData = putContainerState.getGeoData();
-        date = putContainerState.getDate();
     }
 }

@@ -9,8 +9,9 @@ public class CarrierEventStateDto extends BaseStateDto {
     private String event;
 
     public CarrierEventStateDto(CarrierEventState carrierState) {
+        super(carrierState.getDate());
         this.event = carrierState.getEventContract().name();
-        this.date = carrierState.getDate();
+
 
     }
 }

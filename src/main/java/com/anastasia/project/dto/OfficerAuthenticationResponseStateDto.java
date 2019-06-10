@@ -6,7 +6,6 @@ import net.andrc.items.OfficerCertificate;
 import net.andrc.states.OfficerAuthenticationResponseState;
 import net.andrc.states.ResponseStatus;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +19,8 @@ public class OfficerAuthenticationResponseStateDto extends BaseStateDto {
     private String requestId;
     private GeoData geoData;
 
-    public OfficerAuthenticationResponseStateDto (OfficerAuthenticationResponseState responseState){
-        this.data = responseState.getData();
+    public OfficerAuthenticationResponseStateDto(OfficerAuthenticationResponseState responseState) {
+        super(responseState.getDate());
         this.date = responseState.getDate();
         this.signature = responseState.getSignature();
         this.officerCertificate = responseState.getOfficerCertificate();
@@ -30,7 +29,7 @@ public class OfficerAuthenticationResponseStateDto extends BaseStateDto {
         this.responseStatus = responseState.getResult();
         this.ownersNames = responseState.getOwners()
                 .stream()
-                .map(owner->owner.getName()
+                .map(owner -> owner.getName()
                         .getOrganisation())
                 .collect(Collectors.toList());
     }

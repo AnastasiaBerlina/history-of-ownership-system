@@ -12,9 +12,9 @@ public class ChangeCarrierStateDto extends BaseStateDto {
 
 
     public ChangeCarrierStateDto(ChangeCarrierState carrierState) {
+        super(carrierState.getDate());
         this.carrierName = carrierState.getCarrier().getOrganizationName();
         this.data = carrierState.getData();
-        this.date = carrierState.getDate();
         this.geoData = carrierState.getGeoData();
     }
 
