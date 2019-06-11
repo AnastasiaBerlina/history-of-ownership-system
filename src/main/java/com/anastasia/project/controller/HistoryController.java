@@ -6,7 +6,6 @@ import com.anastasia.project.dto.CarrierEventStateDto;
 import com.anastasia.project.dto.ChangeCarrierStateDto;
 import com.anastasia.project.dto.DeleteContainerStateDto;
 import com.anastasia.project.dto.PutContainerStateDto;
-import com.anastasia.project.model.History;
 import com.anastasia.project.service.ConsumeInfo;
 import com.anastasia.project.service.ProduceInfo;
 import com.anastasia.project.webDto.CarrierEventStateWebDto;
@@ -14,6 +13,7 @@ import com.anastasia.project.webDto.ChangeCarrierStateWebDto;
 import com.anastasia.project.webDto.DeleteContainerStateWebDto;
 import com.anastasia.project.webDto.HistoryDto;
 import com.anastasia.project.webDto.PutContainerStateWebDto;
+import com.anastasia.project.webDto.StatisticsWebDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +43,8 @@ public class HistoryController {
     }
 
     @GetMapping("/carrier")
-    public List<History> getCarrierStatistics(@RequestParam String name){
-        return consumeInfo.produceCarrierStatistics(name);
+    public List<StatisticsWebDto> getCarrierStatistics(@RequestParam String name) {
+        return GenericModelMapper.convertList(consumeInfo.produceCarrierStatistics(name), StatisticsWebDto.class);
     }
 
     @GetMapping("/container")

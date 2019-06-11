@@ -7,7 +7,7 @@ import com.anastasia.project.dto.CarrierEventStateDto;
 import com.anastasia.project.dto.ChangeCarrierStateDto;
 import com.anastasia.project.dto.DeleteContainerStateDto;
 import com.anastasia.project.dto.PutContainerStateDto;
-import com.anastasia.project.model.History;
+import com.anastasia.project.model.Statistics;
 import lombok.RequiredArgsConstructor;
 import net.andrc.states.CarrierEventState;
 import net.andrc.states.ChangeCarrierState;
@@ -33,7 +33,7 @@ public class ConsumeInfo {
 
     private final CordaNodeConfig cordaNodeConfig;
 
-    Map<String, List<History>> statisticsMap;
+    Map<String, List<Statistics>> statisticsMap;
 
     public List<BaseStateDto> produceSpecificHistory(String name) {
 
@@ -148,14 +148,22 @@ public class ConsumeInfo {
             for (BaseStateDto state : stateList) {
                 if (state.getClass().equals(ChangeCarrierStateDto.class)) {
                     if (changedCarrier != null) {
+                        String eventType = "";
+                        Date eventDate = new Date(1081157732);
+                        if (!carrierEvent.isEmpty()) {
+                            eventType = carrierEvent.get(carrierEvent.size() - 1).getEvent();
+                            eventDate = carrierEvent.get(carrierEvent.size() - 1).getDate();
+                        }
                         if (!statisticsMap.containsKey(changedCarrier.getCarrierName())) {
                             statisticsMap.put(changedCarrier.getCarrierName(),
-                                    Arrays.asList(new History(changedCarrier.getGeoData(),
+                                    Arrays.asList(new Statistics(changedCarrier.getGeoData(),
                                             ((ChangeCarrierStateDto) state).getGeoData(),
+                                            eventType, eventDate,
                                             carrierEvent.size(), false)));
                         } else {
                             statisticsMap.get(changedCarrier.getCarrierName()).
-                                    add(new History(changedCarrier.getGeoData(), ((ChangeCarrierStateDto) state).getGeoData(),
+                                    add(new Statistics(changedCarrier.getGeoData(), ((ChangeCarrierStateDto) state).getGeoData(),
+                                            eventType, eventDate,
                                             carrierEvent.size(), false));
                         }
 
@@ -177,40 +185,40 @@ public class ConsumeInfo {
     private void fillInIfCarrierIsFaithFull() {
         Set<String> keySet = statisticsMap.keySet();
         for (String key : keySet) {
-            for (History history : statisticsMap.get(key)) {
+            for (Statistics statistics : statisticsMap.get(key)) {
                 int allCarriersTheSameWay = 0;
                 int allEventsSameWay = 0;
                 for (String otherKey : keySet) {
                     if (otherKey.equals(key)) break;
-                    for (History otherHistory : statisticsMap.get(otherKey)) {
-                        if (otherHistory.getFrom().equals(history.getFrom()) &&
-                                otherHistory.getTo().equals(history.getTo())) {
+                    for (Statistics otherStatistics : statisticsMap.get(otherKey)) {
+                        if (otherStatistics.getFrom().equals(statistics.getFrom()) &&
+                                otherStatistics.getTo().equals(statistics.getTo())) {
                             allCarriersTheSameWay++;
-                            allEventsSameWay += otherHistory.getExtraordinaryEvent();
+                            allEventsSameWay += otherStatistics.getExtraordinaryEventCnt();
                         }
                     }
                 }
                 if (allCarriersTheSameWay == 0) {
-                    if (history.getExtraordinaryEvent() > 0) {
-                        history.setBadCarrier(true);
-                    } else history.setBadCarrier(false);
+                    if (statistics.getExtraordinaryEventCnt() > 0) {
+                        statistics.setBadCarrier(true);
+                    } else statistics.setBadCarrier(false);
                 } else {
                     double stats = Math.round(allEventsSameWay / allCarriersTheSameWay);
-                    if (history.getExtraordinaryEvent() > stats) {
-                    history.setBadCarrier(true);
+                    if (statistics.getExtraordinaryEventCnt() > stats) {
+                        statistics.setBadCarrier(true);
                     } else {
-                        history.setBadCarrier(false);
+                        statistics.setBadCarrier(false);
                     }
                 }
             }
         }
     }
 
-    public List<History> produceCarrierStatistics(String name) {
+    public List<Statistics> produceCarrierStatistics(String name) {
         if (statisticsMap.isEmpty()) {
             produceStatisticsMap();
         }
-       return statisticsMap.get(name);
+        return statisticsMap.get(name);
     }
 
 }

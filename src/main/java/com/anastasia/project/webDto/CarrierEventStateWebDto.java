@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import net.andrc.items.Events;
 
 @Data
 @Setter
@@ -16,6 +15,4 @@ public class CarrierEventStateWebDto extends HistoryDto {
 
     @JsonProperty("events")
     private String event;
-
-
 }
