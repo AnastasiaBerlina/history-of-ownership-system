@@ -1,19 +1,20 @@
 package com.anastasia.project.model;
 
-import com.anastasia.project.dto.CarrierEventStateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.andrc.items.GeoData;
 
-import java.util.List;
+import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class History {
+public class Statistics {
     private GeoData from;
     private GeoData to;
-    private int extraordinaryEvent;
+    private String eventType;
+    private Date eventDate;
+    private int extraordinaryEventCnt;
     private boolean badCarrier;
 }
