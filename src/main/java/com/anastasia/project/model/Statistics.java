@@ -11,6 +11,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class Statistics {
+    private String carrierName;
     private GeoData from;
     private GeoData to;
     private String eventType;

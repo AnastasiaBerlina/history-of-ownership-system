@@ -14,6 +14,9 @@ public class StatisticsWebDto {
     private GeoData from;
     private GeoData to;
 
+    @JsonProperty("carrier_name")
+    private String carrierName;
+
     @JsonProperty("title")
     private String eventType;
 

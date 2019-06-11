@@ -155,14 +155,17 @@ public class ConsumeInfo {
                             eventDate = carrierEvent.get(carrierEvent.size() - 1).getDate();
                         }
                         if (!statisticsMap.containsKey(changedCarrier.getCarrierName())) {
+                            List<Statistics> list = new ArrayList<>();
+                            list.add(new Statistics(changedCarrier.getCarrierName(),changedCarrier.getGeoData(),
+                                    ((ChangeCarrierStateDto) state).getGeoData(),
+                                    eventType, eventDate,
+                                    carrierEvent.size(), false));
                             statisticsMap.put(changedCarrier.getCarrierName(),
-                                    Arrays.asList(new Statistics(changedCarrier.getGeoData(),
-                                            ((ChangeCarrierStateDto) state).getGeoData(),
-                                            eventType, eventDate,
-                                            carrierEvent.size(), false)));
+                                    list);
                         } else {
                             statisticsMap.get(changedCarrier.getCarrierName()).
-                                    add(new Statistics(changedCarrier.getGeoData(), ((ChangeCarrierStateDto) state).getGeoData(),
+                                    add(new Statistics(changedCarrier.getCarrierName(),
+                                            changedCarrier.getGeoData(), ((ChangeCarrierStateDto) state).getGeoData(),
                                             eventType, eventDate,
                                             carrierEvent.size(), false));
                         }
@@ -215,7 +218,7 @@ public class ConsumeInfo {
     }
 
     public List<Statistics> produceCarrierStatistics(String name) {
-        if (statisticsMap.isEmpty()) {
+        if (statisticsMap==null) {
             produceStatisticsMap();
         }
         return statisticsMap.get(name);
