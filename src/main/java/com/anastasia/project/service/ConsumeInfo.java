@@ -8,7 +8,6 @@ import com.anastasia.project.dto.ChangeCarrierStateDto;
 import com.anastasia.project.dto.DeleteContainerStateDto;
 import com.anastasia.project.dto.PutContainerStateDto;
 import com.anastasia.project.model.History;
-import com.codahale.metrics.MetricRegistryListener;
 import lombok.RequiredArgsConstructor;
 import net.andrc.states.CarrierEventState;
 import net.andrc.states.ChangeCarrierState;
@@ -25,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -136,7 +136,7 @@ public class ConsumeInfo {
                 .collect(Collectors.toList()));
     }
 
-    public void produceStatistics() {
+    private void produceStatisticsMap() {
         statisticsMap = new HashMap<>();
         List<BaseStateDto> stateList = new ArrayList<>();
         for (NodeRPCConnection nodeRPCConnection : cordaNodeConfig.getConnections()) {
@@ -152,11 +152,11 @@ public class ConsumeInfo {
                             statisticsMap.put(changedCarrier.getCarrierName(),
                                     Arrays.asList(new History(changedCarrier.getGeoData(),
                                             ((ChangeCarrierStateDto) state).getGeoData(),
-                                            carrierEvent, false)));
+                                            carrierEvent.size(), false)));
                         } else {
                             statisticsMap.get(changedCarrier.getCarrierName()).
                                     add(new History(changedCarrier.getGeoData(), ((ChangeCarrierStateDto) state).getGeoData(),
-                                            carrierEvent, false));
+                                            carrierEvent.size(), false));
                         }
 
                     }
@@ -164,18 +164,53 @@ public class ConsumeInfo {
                     carrierEvent.clear();
 
                 }
-                if (state.getClass().equals(CarrierEventStateDto.class)){
-                    carrierEvent.add((CarrierEventStateDto)state);
+                if (state.getClass().equals(CarrierEventStateDto.class)) {
+                    carrierEvent.add((CarrierEventStateDto) state);
                 }
             }
             stateList.clear();
         }
-
+        fillInIfCarrierIsFaithFull();
 
     }
 
-    public void produceCarrierStatistics(String name) {
+    private void fillInIfCarrierIsFaithFull() {
+        Set<String> keySet = statisticsMap.keySet();
+        for (String key : keySet) {
+            for (History history : statisticsMap.get(key)) {
+                int allCarriersTheSameWay = 0;
+                int allEventsSameWay = 0;
+                for (String otherKey : keySet) {
+                    if (otherKey.equals(key)) break;
+                    for (History otherHistory : statisticsMap.get(otherKey)) {
+                        if (otherHistory.getFrom().equals(history.getFrom()) &&
+                                otherHistory.getTo().equals(history.getTo())) {
+                            allCarriersTheSameWay++;
+                            allEventsSameWay += otherHistory.getExtraordinaryEvent();
+                        }
+                    }
+                }
+                if (allCarriersTheSameWay == 0) {
+                    if (history.getExtraordinaryEvent() > 0) {
+                        history.setBadCarrier(true);
+                    } else history.setBadCarrier(false);
+                } else {
+                    double stats = Math.round(allEventsSameWay / allCarriersTheSameWay);
+                    if (history.getExtraordinaryEvent() > stats) {
+                    history.setBadCarrier(true);
+                    } else {
+                        history.setBadCarrier(false);
+                    }
+                }
+            }
+        }
+    }
 
+    public List<History> produceCarrierStatistics(String name) {
+        if (statisticsMap.isEmpty()) {
+            produceStatisticsMap();
+        }
+       return statisticsMap.get(name);
     }
 
 }

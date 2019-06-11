@@ -6,6 +6,7 @@ import com.anastasia.project.dto.CarrierEventStateDto;
 import com.anastasia.project.dto.ChangeCarrierStateDto;
 import com.anastasia.project.dto.DeleteContainerStateDto;
 import com.anastasia.project.dto.PutContainerStateDto;
+import com.anastasia.project.model.History;
 import com.anastasia.project.service.ConsumeInfo;
 import com.anastasia.project.service.ProduceInfo;
 import com.anastasia.project.webDto.CarrierEventStateWebDto;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/history")
 public class HistoryController {
 
     private final ProduceInfo produceInfo;
@@ -39,6 +40,11 @@ public class HistoryController {
     @GetMapping
     public void getMessages() {
         produceInfo.produceInfo();
+    }
+
+    @GetMapping("/carrier")
+    public List<History> getCarrierStatistics(@RequestParam String name){
+        return consumeInfo.produceCarrierStatistics(name);
     }
 
     @GetMapping("/container")
