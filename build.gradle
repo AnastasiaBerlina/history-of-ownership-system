@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'history-of-ownership'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.2.RELEASE'
+    compile group: 'org.apache.kafka', name: 'kafka-streams', version: '2.1.0'
+    compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.2.3.RELEASE'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.2.0'
+    compile group: 'net.corda', name: 'corda-rpc', version: '4.0'
+    compile files('libs/contracts.jar')
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0'
+
+
+
+}
