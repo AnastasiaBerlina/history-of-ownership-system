@@ -1,24 +1,20 @@
 package com.anastasia.project.model;
 
 import com.anastasia.project.dto.CarrierEventStateDto;
-import com.anastasia.project.dto.ChangeCarrierStateDto;
-import com.anastasia.project.dto.DeleteContainerStateDto;
-import com.anastasia.project.dto.PutContainerStateDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.andrc.items.GeoData;
 
 import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class History {
-    private List<CarrierEventStateDto> events;
-
-    private List<ChangeCarrierStateDto> changeCarrier;
-
-    private List<PutContainerStateDto> putContainer;
-
-    private List<DeleteContainerStateDto> deleteContainer;
-
-
+    private GeoData from;
+    private GeoData to;
+    private List<CarrierEventStateDto> extraordinaryEvent;
+    private boolean badCarrier;
 }

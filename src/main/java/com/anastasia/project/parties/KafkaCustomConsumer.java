@@ -28,9 +28,7 @@ public class KafkaCustomConsumer {
     private static final int KAFKA_SERVER_PORT = 9092;
     private static final String CLIENT_ID = "SampleConsumer";
 
-    public KafkaCustomConsumer() {
-
-    }
+    public KafkaCustomConsumer() {}
 
     public KafkaConsumer<String, CarrierEventStateDto> getCarrierEventConsumer() {
         Properties props = getProperties();
